@@ -10,7 +10,7 @@
 
 #define API_URL @"https://yoda.p.mashape.com/yoda"
 #define API_KEY @"X-Mashape-Authorization"
-#define API_TOKEN @"PUB3M2MZXnmq8#7RP7MpG4-PkWzocaia"
+#define API_TOKEN @"<YOUR MASHAPE API TOKEN GOES HERE>"
 
 @interface THViewController : UIViewController
 

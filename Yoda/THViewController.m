@@ -28,12 +28,20 @@
 	
 	NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
+			NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+			
 			if (error) {
 				self.textView.text = [error description];
 			} else {
-				self.textView.text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-				[self.spinner stopAnimating];
+				NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+				if (httpResponse.statusCode == 403) {
+					NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+					text = responseObject[@"message"];
+				}
+				self.textView.text = text;
 			}
+			
+			[self.spinner stopAnimating];
 		});
 	}];
 	
